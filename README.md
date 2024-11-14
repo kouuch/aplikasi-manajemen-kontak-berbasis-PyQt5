@@ -37,3 +37,4 @@ Aplikasi manajemen kontak berbasis desktop menggunakan **PyQt5** untuk antarmuka
     - Anda dapat mengonfigurasi kredensial MySQL di dalam kode, tepatnya pada bagian `create_connection()` di `crud_operations.py`.
 
 ## Tampilan Proyek
+![1](https://github.com/user-attachments/assets/2401bb0b-aad8-4cd4-9eda-ea26eff95670)
