@@ -10,6 +10,9 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        #drakmode
+        self.ui.dark_kbox.stateChanged.connect(self.toggle_dark_mode)
+
         # Setup QLineEdit untuk pencarian
         self.ui.searchInput.setPlaceholderText("Cari kontak...")
 
@@ -116,6 +119,50 @@ class MainWindow(QMainWindow):
         self.ui.nameInput.clear()
         self.ui.phoneInput.clear()
         self.ui.emailInput.clear()
+    
+     # Metode untuk mengaktifkan atau menonaktifkan Dark Mode
+    def toggle_dark_mode(self):
+        if self.ui.dark_kbox.isChecked():
+            self.apply_dark_mode()
+        else:
+            self.setStyleSheet("")  # Kembali ke mode terang
+
+    def apply_dark_mode(self):
+        dark_style = """
+        QMainWindow {
+            background-color: #2e2e2e;
+            color: #ffffff;
+        }
+        QLabel, QLineEdit, QTableWidget, QTableWidgetItem {
+            color: #ffffff;
+        }
+        QPushButton {
+            background-color: #444444;
+            color: white;
+            border: none;
+            padding: 5px;
+        }
+        QPushButton:hover {
+            background-color: #666666;
+        }
+        QLineEdit {
+            background-color: #3c3c3c;
+            border: 1px solid #5a5a5a;
+            color: white;
+        }
+        QTableWidget {
+            background-color: #3c3c3c;
+            alternate-background-color: #444444;
+            gridline-color: #5a5a5a;
+        }
+        QHeaderView::section {
+            background-color: #5a5a5a;
+            color: white;
+            padding: 4px;
+        }
+        """
+        self.setStyleSheet(dark_style)
+
 
 # Jalankan aplikasi
 if __name__ == "__main__":
