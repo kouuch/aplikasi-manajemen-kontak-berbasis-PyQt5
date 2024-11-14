@@ -1,0 +1,2 @@
+1. Menambahkan ui qline edit manual
+2. 
