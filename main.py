@@ -1,15 +1,27 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QMessageBox
-from PyQt5 import QtWidgets, QtCore  # Tambahkan impor yang mungkin diperlukan
-from ui_main import Ui_MainWindow  # pastikan nama file sesuai
-import crud_operations  # modul CRUD Anda
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QMessageBox, QLineEdit, QVBoxLayout, QWidget
+from PyQt5 import QtWidgets, QtCore
+from ui_main import Ui_MainWindow
+import crud_operations
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Tambahkan widget utama untuk layout vertikal
+        main_widget = QWidget(self)
+        self.setCentralWidget(main_widget)
         
+        # Buat layout vertikal untuk menampung QLineEdit dan tabel
+        layout = QVBoxLayout()
+        
+        # QLineEdit untuk pencarian
+        self.searchInput = QLineEdit(self)
+        self.searchInput.setPlaceholderText("Cari kontak...")  # Teks placeholder
+        layout.addWidget(self.searchInput)  # Tambahkan QLineEdit ke layout
+
         # Set up table widget
         self.ui.tableWidget.setColumnCount(4)
         self.ui.tableWidget.setHorizontalHeaderLabels(["ID", "Name", "Phone", "Email"])
@@ -20,10 +32,16 @@ class MainWindow(QMainWindow):
         # Set header alignment dan mode resize
         header = self.ui.tableWidget.horizontalHeader()
         header.setDefaultAlignment(QtCore.Qt.AlignHCenter)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)  # Resize otomatis
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
 
-        # Set kolom terakhir untuk stretch (hanya jika perlu)
+        # Set kolom terakhir untuk stretch
         header.setStretchLastSection(True)
+
+        # Tambahkan tabel ke layout
+        layout.addWidget(self.ui.tableWidget)
+        
+        # Set layout ke widget utama
+        main_widget.setLayout(layout)
 
         # Load existing contacts
         self.load_contacts()
@@ -33,8 +51,15 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_2.clicked.connect(self.Update)
         self.ui.pushButton_3.clicked.connect(self.Delete)
 
-    def load_contacts(self):
+        # Connect search input to filter function
+        self.searchInput.textChanged.connect(self.filter_contacts)
+
+    def load_contacts(self, filter_text=""):
         contacts = crud_operations.get_contacts()
+        if filter_text:
+            # Filter contacts based on the search text
+            contacts = [contact for contact in contacts if filter_text.lower() in contact[1].lower()]
+        
         self.ui.tableWidget.setRowCount(len(contacts))
         for row_num, contact in enumerate(contacts):
             self.ui.tableWidget.setItem(row_num, 0, QTableWidgetItem(str(contact[0])))  # ID
@@ -42,27 +67,24 @@ class MainWindow(QMainWindow):
             self.ui.tableWidget.setItem(row_num, 2, QTableWidgetItem(contact[2]))  # Phone
             self.ui.tableWidget.setItem(row_num, 3, QTableWidgetItem(contact[3]))  # Email
 
-        # Sesuaikan lebar kolom setelah data dimuat
         self.ui.tableWidget.resizeColumnsToContents()
 
-    def Add(self):
-        print("Tombol Add diklik")  # Debug untuk memastikan tombol diklik
-        name = self.ui.lineEdit.text()  # Nama
-        phone = self.ui.lineEdit_2.text()  # Phone
-        email = self.ui.lineEdit_3.text()  # Email
+    def filter_contacts(self):
+        # Get text from search input and reload contacts with filter
+        filter_text = self.searchInput.text()
+        self.load_contacts(filter_text)
 
-        # Validasi input
+    def Add(self):
+        name = self.ui.lineEdit.text()
+        phone = self.ui.lineEdit_2.text()
+        email = self.ui.lineEdit_3.text()
+
         if not name or not phone or not email:
             QMessageBox.warning(self, "Kesalahan Input", "Semua field harus diisi.")
             return 
 
-        # Menambah kontak ke database
         crud_operations.add_contact(name, phone, email)
-
-        # Umpan balik setelah sukses menambahkan
         QMessageBox.information(self, "Sukses", "Kontak berhasil ditambahkan!")
-
-        # Memuat ulang kontak untuk memperbarui tampilan
         self.load_contacts()
         self.clear_inputs()
 
