@@ -15,7 +15,7 @@ Aplikasi manajemen kontak berbasis desktop menggunakan **PyQt5** untuk antarmuka
 
 1. **Clone repository** ini ke lokal komputer Anda:
     ```bash
-    git clone https://github.com/username/repository-name.git
+    https://github.com/kouuch/aplikasi-manajemen-kontak-berbasis-PyQt5.git
     ```
 2. **Install dependencies**:
     Pastikan Anda memiliki Python 3.x terinstal. Anda juga perlu menginstal dependensi yang diperlukan:
