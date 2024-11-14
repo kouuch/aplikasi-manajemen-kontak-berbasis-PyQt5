@@ -10,38 +10,24 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # Tambahkan widget utama untuk layout vertikal
-        main_widget = QWidget(self)
-        self.setCentralWidget(main_widget)
-        
-        # Buat layout vertikal untuk menampung QLineEdit dan tabel
-        layout = QVBoxLayout()
-        
         # QLineEdit untuk pencarian
         self.searchInput = QLineEdit(self)
         self.searchInput.setPlaceholderText("Cari kontak...")  # Teks placeholder
-        layout.addWidget(self.searchInput)  # Tambahkan QLineEdit ke layout
+        
+        # Tambahkan searchInput ke posisi atas layout grid
+        # Misalnya, tambahkan ke baris 0, kolom 0, dan span untuk mencakup beberapa kolom
+        self.ui.gridLayout.addWidget(self.searchInput, 0, 0, 1, 4)
 
-        # Set up table widget
+        # Atur kolom tabel
         self.ui.tableWidget.setColumnCount(4)
         self.ui.tableWidget.setHorizontalHeaderLabels(["ID", "Name", "Phone", "Email"])
-        
-        # Agar tabel tidak bisa diedit langsung
         self.ui.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
         # Set header alignment dan mode resize
         header = self.ui.tableWidget.horizontalHeader()
         header.setDefaultAlignment(QtCore.Qt.AlignHCenter)
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
-
-        # Set kolom terakhir untuk stretch
         header.setStretchLastSection(True)
-
-        # Tambahkan tabel ke layout
-        layout.addWidget(self.ui.tableWidget)
-        
-        # Set layout ke widget utama
-        main_widget.setLayout(layout)
 
         # Load existing contacts
         self.load_contacts()
@@ -57,7 +43,6 @@ class MainWindow(QMainWindow):
     def load_contacts(self, filter_text=""):
         contacts = crud_operations.get_contacts()
         if filter_text:
-            # Filter contacts based on the search text
             contacts = [contact for contact in contacts if filter_text.lower() in contact[1].lower()]
         
         self.ui.tableWidget.setRowCount(len(contacts))
@@ -70,7 +55,6 @@ class MainWindow(QMainWindow):
         self.ui.tableWidget.resizeColumnsToContents()
 
     def filter_contacts(self):
-        # Get text from search input and reload contacts with filter
         filter_text = self.searchInput.text()
         self.load_contacts(filter_text)
 
