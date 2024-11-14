@@ -33,9 +33,9 @@ class MainWindow(QMainWindow):
         self.load_contacts()
 
         # Connect buttons to functions
-        self.ui.pushButton.clicked.connect(self.Add)
-        self.ui.pushButton_2.clicked.connect(self.Update)
-        self.ui.pushButton_3.clicked.connect(self.Delete)
+        self.ui.pushButton.setStyleSheet("background-color: #4CAF50; color: white; padding: 5px;")
+        self.ui.pushButton_2.setStyleSheet("background-color: #2196F3; color: white; padding: 5px;")
+        self.ui.pushButton_3.setStyleSheet("background-color: #f44336; color: white; padding: 5px;")
 
         # Connect search input to filter function
         self.searchInput.textChanged.connect(self.filter_contacts)
