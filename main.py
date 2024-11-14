@@ -29,6 +29,9 @@ class MainWindow(QMainWindow):
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
         header.setStretchLastSection(True)
 
+        # Buat header tabel lebih menonjol dengan background dan font tebal
+        self.ui.tableWidget.horizontalHeader().setStyleSheet("background-color: #E0E0E0; font-weight: bold;")
+
         # Load existing contacts
         self.load_contacts()
 

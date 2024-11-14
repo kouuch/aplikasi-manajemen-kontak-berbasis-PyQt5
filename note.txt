@@ -1,3 +1,4 @@
 Pengembangnan
 1. Menambahkan ui qline edit manual / pencarian
-2. 
+2. Menambahkan Gaya Tombol dengan Stylesheet (manual)
+3. Buat header tabel lebih menonjol dengan background dan font tebal
