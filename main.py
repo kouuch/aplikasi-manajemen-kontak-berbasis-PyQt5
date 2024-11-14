@@ -1,8 +1,8 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QMessageBox, QLineEdit, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QMessageBox, QLineEdit, QLabel, QVBoxLayout, QHBoxLayout, QGridLayout, QWidget
 from PyQt5 import QtWidgets, QtCore
-from ui_main import Ui_MainWindow
-import crud_operations
+from ui_main import Ui_MainWindow  # pastikan nama file yang dihasilkan sesuai
+import crud_operations  # pastikan modul ini ada dan berfungsi
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -10,18 +10,19 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # QLineEdit untuk pencarian
-        self.searchInput = QLineEdit(self)
-        self.searchInput.setPlaceholderText("Cari kontak...")  # Teks placeholder
-        
-        # Tambahkan searchInput ke posisi atas layout grid
-        # Misalnya, tambahkan ke baris 0, kolom 0, dan span untuk mencakup beberapa kolom
-        self.ui.gridLayout.addWidget(self.searchInput, 0, 0, 1, 4)
+        # Setup QLineEdit untuk pencarian
+        self.ui.searchInput.setPlaceholderText("Cari kontak...")
+
+        # Set placeholder untuk input fields
+        self.ui.nameInput.setPlaceholderText("Masukkan Nama")
+        self.ui.phoneInput.setPlaceholderText("Masukkan Nomor Telepon")
+        self.ui.emailInput.setPlaceholderText("Masukkan Email")
 
         # Atur kolom tabel
         self.ui.tableWidget.setColumnCount(4)
         self.ui.tableWidget.setHorizontalHeaderLabels(["ID", "Name", "Phone", "Email"])
         self.ui.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.ui.tableWidget.setSortingEnabled(True)
 
         # Set header alignment dan mode resize
         header = self.ui.tableWidget.horizontalHeader()
@@ -29,19 +30,22 @@ class MainWindow(QMainWindow):
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
         header.setStretchLastSection(True)
 
-        # Buat header tabel lebih menonjol dengan background dan font tebal
+        # Buat header tabel lebih menonjol
         self.ui.tableWidget.horizontalHeader().setStyleSheet("background-color: #E0E0E0; font-weight: bold;")
 
         # Load existing contacts
         self.load_contacts()
 
-        # Connect buttons to functions
+        # Connect tombol dengan fungsi yang sesuai
+        self.ui.pushButton.clicked.connect(self.Add)
+        self.ui.pushButton_2.clicked.connect(self.Update)
+        self.ui.pushButton_3.clicked.connect(self.Delete)
+        self.ui.searchInput.textChanged.connect(self.filter_contacts)
+
+        # Styling tombol
         self.ui.pushButton.setStyleSheet("background-color: #4CAF50; color: white; padding: 5px;")
         self.ui.pushButton_2.setStyleSheet("background-color: #2196F3; color: white; padding: 5px;")
         self.ui.pushButton_3.setStyleSheet("background-color: #f44336; color: white; padding: 5px;")
-
-        # Connect search input to filter function
-        self.searchInput.textChanged.connect(self.filter_contacts)
 
     def load_contacts(self, filter_text=""):
         contacts = crud_operations.get_contacts()
@@ -58,13 +62,13 @@ class MainWindow(QMainWindow):
         self.ui.tableWidget.resizeColumnsToContents()
 
     def filter_contacts(self):
-        filter_text = self.searchInput.text()
+        filter_text = self.ui.searchInput.text()
         self.load_contacts(filter_text)
 
     def Add(self):
-        name = self.ui.lineEdit.text()
-        phone = self.ui.lineEdit_2.text()
-        email = self.ui.lineEdit_3.text()
+        name = self.ui.nameInput.text()
+        phone = self.ui.phoneInput.text()
+        email = self.ui.emailInput.text()
 
         if not name or not phone or not email:
             QMessageBox.warning(self, "Kesalahan Input", "Semua field harus diisi.")
@@ -82,9 +86,9 @@ class MainWindow(QMainWindow):
             return
 
         contact_id = int(self.ui.tableWidget.item(selected_row, 0).text())
-        name = self.ui.lineEdit.text()
-        phone = self.ui.lineEdit_2.text()
-        email = self.ui.lineEdit_3.text()
+        name = self.ui.nameInput.text()
+        phone = self.ui.phoneInput.text()
+        email = self.ui.emailInput.text()
 
         crud_operations.update_contact(contact_id, name, phone, email)
         self.load_contacts()
@@ -104,14 +108,14 @@ class MainWindow(QMainWindow):
     def populate_selected_contact(self):
         selected_row = self.ui.tableWidget.currentRow()
         if selected_row != -1:
-            self.ui.lineEdit.setText(self.ui.tableWidget.item(selected_row, 1).text())
-            self.ui.lineEdit_2.setText(self.ui.tableWidget.item(selected_row, 2).text())
-            self.ui.lineEdit_3.setText(self.ui.tableWidget.item(selected_row, 3).text())
+            self.ui.nameInput.setText(self.ui.tableWidget.item(selected_row, 1).text())
+            self.ui.phoneInput.setText(self.ui.tableWidget.item(selected_row, 2).text())
+            self.ui.emailInput.setText(self.ui.tableWidget.item(selected_row, 3).text())
 
     def clear_inputs(self):
-        self.ui.lineEdit.clear()
-        self.ui.lineEdit_2.clear()
-        self.ui.lineEdit_3.clear()
+        self.ui.nameInput.clear()
+        self.ui.phoneInput.clear()
+        self.ui.emailInput.clear()
 
 # Jalankan aplikasi
 if __name__ == "__main__":

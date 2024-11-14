@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>849</width>
+    <height>392</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,15 +15,11 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Nama</string>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="1" colspan="2">
-     <widget class="QLineEdit" name="lineEdit"/>
+     <widget class="QLineEdit" name="nameInput"/>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLineEdit" name="phoneInput"/>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
@@ -32,8 +28,42 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="1" colspan="2">
-     <widget class="QLineEdit" name="lineEdit_2"/>
+    <item row="4" column="0" colspan="2">
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Add</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="text">
+       <string>Update</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>Delete</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1" colspan="2">
+     <widget class="QLineEdit" name="emailInput"/>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Nama</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1" colspan="2">
+     <widget class="QLineEdit" name="searchInput"/>
+    </item>
+    <item row="5" column="0" colspan="4">
+     <widget class="QTableWidget" name="tableWidget"/>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_3">
@@ -42,32 +72,12 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1" colspan="2">
-     <widget class="QLineEdit" name="lineEdit_3"/>
-    </item>
-    <item row="3" column="0" colspan="2">
-     <widget class="QPushButton" name="pushButton">
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>Add</string>
+       <string>Cari kontak</string>
       </property>
      </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="text">
-       <string>Update</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="3">
-     <widget class="QPushButton" name="pushButton_3">
-      <property name="text">
-       <string>Delete</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0" colspan="4">
-     <widget class="QTableWidget" name="tableWidget"/>
     </item>
    </layout>
   </widget>
@@ -76,7 +86,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>849</width>
      <height>26</height>
     </rect>
    </property>
